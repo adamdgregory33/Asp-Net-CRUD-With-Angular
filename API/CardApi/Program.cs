@@ -15,7 +15,16 @@ builder.Services.AddDbContext<CardsDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("CardsDbContextConnectionString")
     ));
 
-
+// CORS
+builder.Services.AddCors((setup) =>
+{
+    setup.AddPolicy("default", (options) =>
+    {
+        options.AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowAnyOrigin();
+    });
+});
 
 var app = builder.Build();
 
@@ -25,6 +34,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("default");
 
 app.UseHttpsRedirection();
 
